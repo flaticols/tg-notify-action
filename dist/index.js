@@ -489,7 +489,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.sendReleaseMessage = void 0;
+exports.pinChatMessage = exports.sendReleaseMessage = void 0;
 const core = __importStar(__webpack_require__(470));
 const axios_1 = __importDefault(__webpack_require__(53));
 const tgBotToken = core.getInput('tg-bot-token', { required: true });
@@ -523,11 +523,11 @@ const client = axios_1.default.create({
 //     req.write(data)
 //     req.end()
 // }
-function sendReleaseMessage(tgChatId, msg, link) {
+function sendReleaseMessage(chat_id, msg, link) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const response = yield client.post("sendMessage", {
-                chat_id: tgChatId,
+                chat_id: chat_id,
                 text: msg,
                 parse_mode: "MarkdownV2",
                 disable_notification: false,
@@ -539,6 +539,8 @@ function sendReleaseMessage(tgChatId, msg, link) {
                     ]
                 }
             });
+            const tgResponse = response.data;
+            yield pinChatMessage(tgResponse.result.chat.id, tgResponse.result.message_id, true);
         }
         catch (exception) {
             core.error(JSON.stringify(exception.response.data));
@@ -546,6 +548,21 @@ function sendReleaseMessage(tgChatId, msg, link) {
     });
 }
 exports.sendReleaseMessage = sendReleaseMessage;
+function pinChatMessage(chat_id, message_id, disable_notification = false) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const response = yield client.post("pinChatMessage", {
+                chat_id,
+                message_id,
+                disable_notification
+            });
+        }
+        catch (exception) {
+            core.error(JSON.stringify(exception.response.data));
+        }
+    });
+}
+exports.pinChatMessage = pinChatMessage;
 
 
 /***/ }),

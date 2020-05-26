@@ -1,6 +1,6 @@
 import * as core from "@actions/core";
 import axios from "axios";
-import { ReleaseLink } from "./schema";
+import { ReleaseLink, TelegramSendMessageResponse } from "./schema";
 
 const tgBotToken = core.getInput('tg-bot-token', { required: true });
 
@@ -40,10 +40,10 @@ const client = axios.create({
 //     req.end()
 // }
 
-export async function sendReleaseMessage(tgChatId: string, msg: string, link: ReleaseLink) {
+export async function sendReleaseMessage(chat_id: string, msg: string, link: ReleaseLink) {
     try {
         const response = await client.post("sendMessage", {
-            chat_id: tgChatId,
+            chat_id: chat_id,
             text: msg,
             parse_mode: "MarkdownV2",
             disable_notification: false,
@@ -54,6 +54,21 @@ export async function sendReleaseMessage(tgChatId: string, msg: string, link: Re
                     ]
                 ]
             }
+        });
+
+        const tgResponse: TelegramSendMessageResponse = response.data;
+        await pinChatMessage(tgResponse.result.chat.id, tgResponse.result.message_id, true);
+    } catch (exception) {
+        core.error(JSON.stringify(exception.response.data))
+    }
+}
+
+export async function pinChatMessage(chat_id: number | string, message_id: Number, disable_notification: boolean = false) {
+    try {
+        const response = await client.post("pinChatMessage", {
+            chat_id,
+            message_id,
+            disable_notification
         });
     } catch (exception) {
         core.error(JSON.stringify(exception.response.data))
