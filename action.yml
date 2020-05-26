@@ -1,0 +1,26 @@
+name: 'Paperport Telegram Action'
+description: 'Send powerful notification to Telegram.'
+author: 'Denis Panfilov'
+inputs:
+  tg-bot-token:
+    description: 'Telegram Bot Token.'
+    required: true
+  tg-chat-id:
+    description: "Chat Id."
+    required: true
+  type:
+    description: "Message type. E.g. ['release', 'status', 'message']"
+    required: true
+  release-link:
+    description: "Release link."
+    required: false
+  message:
+    description: "Message."
+    required: false
+
+outputs:
+    message:
+      description: "Result message."
+runs:
+  using: 'node12'
+  main: 'dist/index.js'
