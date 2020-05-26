@@ -1,4 +1,4 @@
-name: 'Paperport Telegram Action'
+name: 'Telegram Notification Action'
 description: 'Send powerful notification to Telegram.'
 author: 'Denis Panfilov'
 inputs:
