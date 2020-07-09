@@ -14,6 +14,9 @@ inputs:
   release-link:
     description: "Release link."
     required: false
+  release-label:
+    description: "Release Link Label"
+    required: false
   message:
     description: "Message."
     required: false

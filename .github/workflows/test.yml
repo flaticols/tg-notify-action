@@ -24,5 +24,6 @@ jobs:
         tg-bot-token: ${{ secrets.TG_BOT_TOKEN }}
         tg-chat-id: ${{ secrets.TG_CHAT_ID }}
         type: release
+        release-label: "Release Button"
         release-link: https://github.com/flaticols/tg-notify-action/releases
         message: New reelase\.

@@ -11,10 +11,11 @@ async function run(): Promise<void> {
     switch (type.toLowerCase()) {
       case "release":
         const releaseLink = core.getInput("release-link");
+        const releaseText = core.getInput("release-label")
         const msg = core.getInput("message");
 
         tg.sendReleaseMessage(tgChatId, msg.trim(), {
-          text: "Release",
+          text: releaseText,
           url: releaseLink,
         });
 
